@@ -20,7 +20,7 @@ export default {
 
     methods: {
         submit(){
-            axios.put('challenge', this.formEdit)
+            axios.put('https://vitalityfunctionsapp.azurewebsites.net/challenge', this.formEdit)
         }
     },
 }
