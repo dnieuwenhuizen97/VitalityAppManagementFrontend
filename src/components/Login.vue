@@ -21,9 +21,21 @@
 
 <script>
 import axios from 'axios'
+import { isJwtExpired } from 'jwt-check-expiration';
 
-window.onbeforeunload = () => {
-    localStorage.removeItem('token');
+// window.onbeforeunload = () => {
+//     localStorage.removeItem('token');
+// }
+
+window.onload = () => {
+    const token = localStorage.getItem('token')
+
+    if(token) {
+        if(isJwtExpired(token)) {
+            localStorage.removeItem('token');
+            location.reload();
+        }
+    }
 }
 
 export default {
