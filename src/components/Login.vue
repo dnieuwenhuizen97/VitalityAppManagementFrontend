@@ -7,7 +7,7 @@
                       <v-alert v-if="error" type="error">
                           {{ error }}
                       </v-alert>
-                      <v-text-field v-model="authData.UserEmail" label="E-mail"></v-text-field>
+                      <v-text-field v-model="authData.Email" label="E-mail"></v-text-field>
                       <v-text-field v-model="authData.Password" label="Password" type="password"></v-text-field>
                   </v-card-text>
                   <v-btn block large color="primary" elevation="2" @click="login()">
@@ -22,19 +22,23 @@
 <script>
 import axios from 'axios'
 
+window.onbeforeunload = () => {
+    localStorage.removeItem('token');
+}
+
 export default {
 
     data(){
         return{
             authData:{
-                UserEmail: "",
+                Email: "",
                 Password: ""
             }
         }
     },
     methods: {
         login() {
-            axios.post('https://vitalityfunctionsapp.azurewebsites.net/api/Login', { UserEmail: this.authData.UserEmail, Password: this.authData.Password })
+            axios.post('https://vitalityfunctionsapp.azurewebsites.net/api/Login', { Email: this.authData.Email, Password: this.authData.Password })
             .then(response => {
                 if (response.data.accessToken && response.data.userType === 'Admin') {
                     localStorage.setItem('token', response.data.accessToken)
