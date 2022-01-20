@@ -23,7 +23,7 @@
           alt="Vitaliteits Logo"
           class="mx-2"
           contain
-          src="HeartLogo.png"
+          src="./assets/HeartLogo.png"
           transition="scale-transition"
           width="40"
           align="right"

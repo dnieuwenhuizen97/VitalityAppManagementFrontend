@@ -31,6 +31,16 @@
                   ></v-text-field>
                   <v-text-field v-model="challenge.location" label="Locatie"></v-text-field>
                   <v-text-field v-model="challenge.points" label="Punten"></v-text-field>
+
+                  <label for="img">Afbeelding toevoegen</label>
+                  <input type="file" id="img" name="img" accept="image/*">
+                  
+                  <label for="vid">Video toevoegen</label>
+                  <input type="file" id="vid" name="vid" accept="video/*">
+
+                  <br>
+                  <br>
+
                   <v-btn class="mr-4" type="button" color="primary" @click="updateChallenge(challenge)">Update challenge</v-btn>
                   <v-btn class="mr-4" type="button" color="secondary" @click="deleteSingleChallenge(challenge)">Verwijder challenge</v-btn>
                </v-form>
@@ -59,14 +69,16 @@ export default {
    computed: {
       headers() {
          return [
-            { text: "Titel", value: "title"},
-            { text: "Beschrijving", value: "description"},
-            { text: "Challenge type", value: "challengeType"},
-            { text: "Start datum", value: "startDate"},
-            { text: "Eind datum", value: "endDate"},
-            { text: "Locatie", value: "location"},
-            { text: "Punten", value: "points"},
-            { text: "Deelnemers", value: "totalSubscribers"}
+            { text: "Titel", value: "title" },
+            { text: "Beschrijving", value: "description" },
+            { text: "Challenge type", value: "challengeType" },
+            { text: "Start datum", value: "startDate" },
+            { text: "Eind datum", value: "endDate" },
+            { text: "Locatie", value: "location" },
+            { text: "Punten", value: "points" },
+            { text: "Deelnemers", value: "totalSubscribers" },
+            { text: "Afbeelding", value: "imageLink" },
+            { text: "Video", value: "videoLink" }
          ];
       },
       
@@ -106,9 +118,33 @@ export default {
             location: challenge.location,
             points: challenge.points
          }
+
+         var image = document.querySelector('#img');
+         var imgfile = image.files[0];
+         if (imgfile) {
+            if (imgfile.name.endsWith('.jpg') || imgfile.name.endsWith('.jpeg') || imgfile.name.endsWith('.png')) {
+               await axios.put('https://vitalityfunctionsapp.azurewebsites.net/api/challenge/' + challenge.challengeId + '/image', imgfile, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') } })
+               .then(result => {
+                  console.log(result.data);
+               })
+            }
+         }
+         
+         var video = document.querySelector('#vid');
+         var vidfile = video.files[0];
+         if (vidfile) {
+            if (vidfile.name.endsWith('.mp4') || vidfile.name.endsWith('.mov') || vidfile.name.endsWith('.avi') || vidfile.name.endsWith('.wmv')) {
+               await axios.put('https://vitalityfunctionsapp.azurewebsites.net/api/challenge/' + challenge.challengeId + '/video', vidfile, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') } })
+               .then(result => {
+                  console.log(result.data);
+               })
+            }
+         }
+
          await axios.put('https://vitalityfunctionsapp.azurewebsites.net/api/challenge/' + challenge.challengeId, updateProperties, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') } })
          .then(result => {
             console.log(result.data)
+
             window.location.reload()
          })
       }
