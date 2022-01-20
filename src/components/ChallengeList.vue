@@ -108,6 +108,12 @@ export default {
          this.challenge = challengeToUpdate
          this.dialogdetail = true
       },
+      sanitizeInput(input) {
+         const specialChars = /[@#$%^&*_+=\]{};\\|<>]+/ig;
+         const sanitizedString = input.toString().replaceAll(specialChars, '');
+
+         return sanitizedString;
+      },
       async updateChallenge(challenge) {
          const updateProperties = {
             title: challenge.title,
@@ -117,6 +123,10 @@ export default {
             endDate: challenge.endDate,
             location: challenge.location,
             points: challenge.points
+         }
+
+         for (let prop in updateProperties) {
+            updateProperties[prop] = this.sanitizeInput(updateProperties[prop]);
          }
 
          var image = document.querySelector('#img');

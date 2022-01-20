@@ -49,7 +49,17 @@ export default {
         }
     },
     methods: {
+        sanitizeInput(input) {
+         const specialChars = /[@#$%^&*_+=\]{};\\|<>]+/ig;
+         const sanitizedString = input.toString().replaceAll(specialChars, '');
+
+         return sanitizedString;
+        },
         login() {
+            for (let prop in this.authData) {
+            this.authData[prop] = this.sanitizeInput(this.authData[prop]);
+            }
+
             axios.post('https://vitalityfunctionsapp.azurewebsites.net/api/Login', { Email: this.authData.Email, Password: this.authData.Password })
             .then(response => {
                 if (response.data.accessToken && response.data.userType === 'Admin') {

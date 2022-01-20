@@ -39,6 +39,12 @@ export default {
     };
   },
   methods: {
+    sanitizeInput(input) {
+      const specialChars = /[@#$%^&*_+=\]{};\\|<>]+/ig;
+      const sanitizedString = input.toString().replaceAll(specialChars, '');
+
+      return sanitizedString;
+    },
     AddChallenge() {
       const postData = {
         id: 0,
@@ -50,6 +56,11 @@ export default {
         location: this.location,
         points: parseInt(this.points),
       };
+
+      for (let prop in postData) {
+        postData[prop] = this.sanitizeInput(postData[prop]);
+      }
+
       axios
         .post("https://vitalityfunctionsapp.azurewebsites.net/api/challenge", postData, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') }})
         .then((result) => {
