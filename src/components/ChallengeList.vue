@@ -132,8 +132,10 @@ export default {
          var image = document.querySelector('#img');
          var imgfile = image.files[0];
          if (imgfile) {
+            let formdata = new FormData();
+            formdata.append('file', imgfile)
             if (imgfile.name.endsWith('.jpg') || imgfile.name.endsWith('.jpeg') || imgfile.name.endsWith('.png')) {
-               await axios.put('https://vitalityfunctionsapp.azurewebsites.net/api/challenge/' + challenge.challengeId + '/image', imgfile, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') } })
+               await axios.put('https://vitalityfunctionsapp.azurewebsites.net/api/challenge/' + challenge.challengeId + '/image', formdata, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') } })
                .then(result => {
                   console.log(result.data);
                })
@@ -143,8 +145,10 @@ export default {
          var video = document.querySelector('#vid');
          var vidfile = video.files[0];
          if (vidfile) {
+            let formdata = new FormData();
+            formdata.append('file', vidfile)
             if (vidfile.name.endsWith('.mp4') || vidfile.name.endsWith('.mov') || vidfile.name.endsWith('.avi') || vidfile.name.endsWith('.wmv')) {
-               await axios.put('https://vitalityfunctionsapp.azurewebsites.net/api/challenge/' + challenge.challengeId + '/video', vidfile, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') } })
+               await axios.put('https://vitalityfunctionsapp.azurewebsites.net/api/challenge/' + challenge.challengeId + '/video', formdata, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token') } })
                .then(result => {
                   console.log(result.data);
                })
