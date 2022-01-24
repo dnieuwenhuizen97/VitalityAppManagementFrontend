@@ -67,9 +67,9 @@ export default {
           console.log(result);
           this.$refs.form.reset();
           this.$emit("update");
+          window.location.reload();
         })
         .catch((error) => console.log(error));
-      window.location.reload()
     },
   },
 };
