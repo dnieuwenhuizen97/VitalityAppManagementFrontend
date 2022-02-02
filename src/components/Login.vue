@@ -50,7 +50,7 @@ export default {
     },
     methods: {
         sanitizeInput(input) {
-         const specialChars = /[@#$%^&*_+=\]{};\\|<>]+/ig;
+         const specialChars = /[#$%^&*_+=\]{};\\|<>]+/ig;
          const sanitizedString = input.toString().replaceAll(specialChars, '');
 
          return sanitizedString;
